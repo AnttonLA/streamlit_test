@@ -75,7 +75,6 @@ def plotly_plot_genome_position_v_pval(df: pd.DataFrame, column_name_map: dict, 
 
     # Add -log10(p) column
     df['-log10(p)'] = -np.log10(df[column_name_map['p']])
-
     tab1, tab2 = st.tabs(["By exponent of p-value (default)", "By p-value"])
     with tab1:
         scatter = go.Scatter(
@@ -90,6 +89,8 @@ def plotly_plot_genome_position_v_pval(df: pd.DataFrame, column_name_map: dict, 
         fig = go.Figure(scatter)
         hovertemplate_string = 'variant: %{text}<br>p-value: %{customdata}<extra></extra>'
         fig.update_traces(hovertemplate=hovertemplate_string)
+        fig.update_layout(yaxis=dict(title='-log10(p)'),
+                          xaxis=dict(title=f'Genomic position Chr{df[column_name_map["chr"]].iloc[0]} (bp)'))
         st.plotly_chart(fig)
 
     with tab2:
@@ -105,6 +106,8 @@ def plotly_plot_genome_position_v_pval(df: pd.DataFrame, column_name_map: dict, 
         fig = go.Figure(scatter)
         hovertemplate_string = 'variant: %{text}<br>p-value: %{customdata}<extra></extra>'
         fig.update_traces(hovertemplate=hovertemplate_string)
+        fig.update_layout(yaxis=dict(title='P-value'),
+                          xaxis=dict(title=f'Genomic position Chr{df[column_name_map["chr"]].iloc[0]} (bp)'))
         st.plotly_chart(fig)
 
 
